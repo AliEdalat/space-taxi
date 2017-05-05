@@ -9,3 +9,10 @@ Passenger::~Passenger(){
 		delete trips[i];
 	}
 }
+void Passenger::cancel_trip(){
+	if (!trips[trips.size()-1]->get_is_accepted())
+	{
+		int index=trips.size()-1;
+		trips.erase(trips.begin()+index);
+	}
+}

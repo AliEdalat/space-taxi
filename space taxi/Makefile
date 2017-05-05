@@ -1,5 +1,5 @@
-all:user.o passenger.o driver.o vip_driver.o admin.o date_time.o galaxy.o planet.o spaceship.o address.o code.o trip.o invalid_command.o command.o server.o space_taxi_system.o main.o
-	g++ user.o passenger.o driver.o vip_driver.o admin.o date_time.o galaxy.o planet.o spaceship.o address.o code.o trip.o invalid_command.o command.o server.o space_taxi_system.o main.o
+all:user.o passenger.o driver.o vip_driver.o admin.o date_time.o galaxy.o planet.o spaceship.o address.o code.o Vip_trip.o trip.o invalid_command.o command.o server.o space_taxi_system.o main.o
+	g++ user.o passenger.o driver.o vip_driver.o admin.o date_time.o galaxy.o planet.o spaceship.o address.o code.o Vip_trip.o trip.o invalid_command.o command.o server.o space_taxi_system.o main.o
 	./a.out
 user.o:user.cpp user.h
 	g++ -c user.cpp
@@ -25,6 +25,8 @@ code.o:code.cpp code.h
 	g++ -c code.cpp
 trip.o:trip.cpp trip.h
 	g++ -c trip.cpp
+Vip_trip.o:Vip_trip.cpp Vip_trip.h
+	g++ -c Vip_trip.cpp
 invalid_command.o:invalid_command.cpp invalid_command.h
 	g++ -c invalid_command.cpp
 command.o:command.cpp command.h

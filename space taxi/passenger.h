@@ -17,7 +17,9 @@ public:
 	};
 	std::string get_phone(){return phone_number;}
 	//std::string get_status();
+	void cancel_trip();
 	void add_trip(Trip* new_trip){trips.push_back(new_trip);}
+	Trip* get_trip(){return trips[trips.size()-1];}
 	~Passenger();
 	//get discount code
 	//calculate trip cost

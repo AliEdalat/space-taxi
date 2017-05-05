@@ -3,6 +3,7 @@
 
 #include "user.h"
 #include "spaceship.h"
+#include "trip.h"
 #include <iostream>
 
 class Driver:public User
@@ -22,6 +23,8 @@ public:
 		spaceship=new Spaceship(_spaceship_number,_spaceship_model,_production_year,_color);
 	};
 	std::string get_spaceship_number(){return spaceship->get_number();}
+	void add_trip(Trip* new_trip){trips.push_back(new_trip);}
+	void show_trip_requests();
 	virtual void show_information();
 	//std::string get_status(){return status;}
 	//void set_status(std::string _status){status=_status;}
@@ -32,6 +35,7 @@ public:
 	//show end trip signal
 protected:
 	//std::string status;
+	std::vector<Trip*> trips;
 	int score;
 	Spaceship* spaceship;
 };

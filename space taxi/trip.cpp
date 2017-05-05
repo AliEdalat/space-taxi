@@ -9,4 +9,13 @@ Trip::Trip(std::string passenger_username,Address* _source_address,std::vector<A
 	cost=_cost;
 	accepted=false;
 	date_time=_date_time;
+	finished=false;
+}
+void Trip::show_trip_information(){
+	cout<<username<<' '<<source_address->get_galaxy()<<','<<source_address->get_planet()<<' ';
+	for (int i = 0; i < destinations.size(); ++i)
+	{
+		cout<<destinations[i]->get_galaxy()<<','<<destinations[i]->get_planet()<<' ';
+	}
+	cout<<cost<<' '<<cost<<endl;
 }

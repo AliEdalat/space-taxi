@@ -11,6 +11,7 @@
 #include "planet.h"
 #include "passenger.h"
 #include "trip.h"
+#include "Vip_trip.h"
 #include "driver.h"
 #include "vip_driver.h"
 #include "address.h"
@@ -41,8 +42,10 @@ public:
 	void read_spaceship_models();
 	void set_status_available(std::string username,Address* address);
 	void set_status_unavailable(std::string username);
-	void estimate_trip(std::string username,bool& is_vip,Address* source_address,std::vector<Address*> destinations);
+	void estimate_trip(std::string username,bool is_vip,Address* source_address,std::vector<Address*> destinations);
 	void request_trip(std::string username, bool is_vip,Address* source_address,std::vector<Address*> destinations);
+	void cancel_trip_request(std::string username);
+	void show_trip_requests(std::string username);
 	~taxi_system();
 private:
 	bool find_username(std::string username);
@@ -52,8 +55,10 @@ private:
 	bool find_model(std::string model);
 	User* find_user(std::string username);
 	bool find_address(Address* address);
+	Galaxy* find_galaxy(std::string galaxy_name);
 	int calculate_cost_of_trip(bool& is_vip,Address* source_address,std::vector<Address*> destinations);
 	void delete_driver_registeration(std::string username);
+	void send_trip_to_drivers();
 	int credit;
 	Date_time* date_time;
 	Admin* admin;

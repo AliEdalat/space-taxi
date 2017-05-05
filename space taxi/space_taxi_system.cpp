@@ -36,12 +36,12 @@ Planet* find_planet(std::vector<Planet*> planets,string planet_name){
 	}
 	return NULL;
 }
-void print_tree(Planet* root,int i){
-	cout<<i<<root->get_name()<<endl;
+void print_tree(Planet* root,int in){
+	cout<<in<<root->get_name()<<endl;
 	std::vector<Planet*> children=root->get_planets();
 	for (int i = 0; i < children.size(); ++i)
 	{
-		print_tree(children[i],i+1);
+		print_tree(children[i],in+1);
 	}
 }
 void taxi_system::read_spaceship_models(){
@@ -59,9 +59,8 @@ void taxi_system::read_topology(){
 	string line;
 	int line_counter=0;
 	int number_of_planets=0;
-	std::vector<Planet*> planets;
+	std::vector<Planet*> planets_in_file;
 	while(getline(file,line)){
-		//cout<<line<<endl;
 		if (line_counter == 0)
 		{
 			line_counter++;
@@ -79,50 +78,58 @@ void taxi_system::read_topology(){
 		if (line_counter == 2)
 		{
 			number_of_planets--;
-			Planet* root;
 			int find=line.find(' ');
 			string planet_name=line.substr(0,find);
 			int planets_count=stoi(line.substr(find+1));
-			root=find_planet(planets,planet_name);
-			if(root == NULL){
-				root=new Planet(planet_name);
-				planets.push_back(root);
+			
+			if(find_planet(planets_in_file,planet_name) == NULL){
+				Planet* new_planet=new Planet(planet_name);
+				planets_in_file.push_back(new_planet);
 			}
+			Planet* root=find_planet(planets_in_file,planet_name);
+
 			for (int i = 0; i < planets_count; ++i)
 			{
-				string temp;
-				getline(file,temp);
-				//cout<<temp<<endl;
-				if (find_planet(planets,temp) == NULL)
-				{
-					Planet* Planet_pointer=new Planet(temp);
-					planets.push_back(Planet_pointer);
-					root->add_adjacent_planet(Planet_pointer);
+				getline(file,line);
+				int index=line.size()-1;
+				line.erase(line.begin()+index);
+				if(find_planet(planets_in_file,line) == NULL){
+					Planet* new_planet=new Planet(line);
+					planets_in_file.push_back(new_planet);
+					root->add_adjacent_planet(new_planet);
 				}
-
 			}
-			cout<<"PRINT TREE: "<<endl;
-			print_tree(planets[0],0);
-
 			if(number_of_planets == 0){
-				
-				galaxies[galaxies.size()-1]->add_root(planets[0]);
-				print_tree(planets[0],0);
-
-				planets.clear();
+				galaxies[galaxies.size()-1]->add_root(planets_in_file[0]);
+				print_tree(planets_in_file[0],0);
+				planets_in_file.clear();
 				line_counter=1;
 			}
 		}
 	}
 	file.close();
-	cout<<galaxies[0]->calculate_distance_to("planet2")<<endl;
+	cout<<galaxies[2]->calculate_distance("planet3","planet2")<<endl;
+}
+Galaxy* taxi_system::find_galaxy(string galaxy_name){
+	for (int i = 0; i < galaxies.size(); ++i)
+	{
+		if(galaxies[i]->get_name() == galaxy_name){
+			return galaxies[i];
+		}
+	}
+	return NULL;
 }
 int taxi_system::calculate_distance(Address* from,Address* to){
 	if(from->get_galaxy() == to->get_galaxy()){
-
+		Galaxy* galaxy=find_galaxy(from->get_galaxy());
+		return galaxy->calculate_distance(from->get_planet(),to->get_planet());
 	}
 	else{
-
+		Galaxy* from_galaxy=find_galaxy(from->get_galaxy());
+		Galaxy* to_galaxy=find_galaxy(to->get_galaxy());
+		int from_to_root=from_galaxy->calculate_distance_to(from->get_planet());
+		int to_to_root=to_galaxy->calculate_distance_to(to->get_planet());
+		return from_to_root+to_to_root;
 	}
 }
 bool taxi_system::find_username(string username){
@@ -389,7 +396,7 @@ int taxi_system::calculate_cost_of_trip(bool& is_vip,Address* source_address,std
 		return sum;
 	}
 }
-void taxi_system::estimate_trip(std::string username,bool& is_vip,Address* source_address,std::vector<Address*> destinations){
+void taxi_system::estimate_trip(std::string username,bool is_vip,Address* source_address,std::vector<Address*> destinations){
 	int cost;
 	if (find_username(username) && find_user(username)->get_is_login() && find_address(source_address))
 	{
@@ -426,9 +433,15 @@ void taxi_system::request_trip(std::string username, bool is_vip,Address* source
 		int cost=calculate_cost_of_trip(is_vip,source_address,destinations);
 		if(is_vip){
 			trips.push_back(new Vip_trip(username,source_address,destinations,cost,date_time));
+			Passenger* passenger=(Passenger*)find_user(username);
+			passenger->add_trip(trips[trips.size()-1]);
+			//send_trip_to_drivers(trips[trips.size()-1]);
 			cout<<cost<<' '<<cost/2<<endl;
 		}else{
 			trips.push_back(new Trip(username,source_address,destinations,cost,date_time));
+			Passenger* passenger=(Passenger*)find_user(username);
+			passenger->add_trip(trips[trips.size()-1]);
+			//send_trip_to_drivers(trips[trips.size()-1]);
 			cout<<cost<<' '<<cost<<endl;
 		}
 
@@ -438,5 +451,39 @@ void taxi_system::request_trip(std::string username, bool is_vip,Address* source
 		cout<<"you can not use \"request_trip\" command please login first!"<<endl;	
 	}else{
 		cout<<'\"'<<source_address->get_galaxy()<<','<<source_address->get_planet()<<'\"'<<" is not a valid address!"<<endl;
+	}
+}
+void taxi_system::cancel_trip_request(std::string username){
+	if(find_username(username) && find_user(username)->get_is_login()){
+		Passenger* passenger=(Passenger*)find_user(username);
+		passenger->cancel_trip();
+		int index=-1;
+		for (int i = 0; i < trips.size(); ++i)
+		{
+			if(trips[i] == passenger->get_trip() && !trips[i]->get_is_accepted()){
+				index=i;
+				break;
+			}
+		}
+		if(index >= 0){
+			delete trips[index];
+			trips.erase(trips.begin()+index);
+		}else{
+			cout<<"you can not cancel your trip request!"<<endl;
+		}
+	}else if(!find_username(username)){
+		cout<<"you do not have account in space taxi system!"<<endl;
+	}else{
+		cout<<"you can not use \"cancel_trip_request\" command please login first!"<<endl;
+	}
+}
+void taxi_system::show_trip_requests(std::string username){
+	if(find_username(username) && find_user(username)->get_is_login()){
+		Driver* driver=(Driver*)find_user(username);
+		driver->show_trip_requests();
+	}else if(!find_username(username)){
+		cout<<"you do not have account in space taxi system!"<<endl;
+	}else{
+		cout<<"you can not use \"show_trip_request\" command please login first!"<<endl;
 	}
 }

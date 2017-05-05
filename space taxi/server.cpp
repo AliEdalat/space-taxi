@@ -4,9 +4,22 @@ using namespace std;
 Server::Server(){
 	t=new taxi_system();
 	t->read_spaceship_models();
+	t->read_topology();
 }
 Server::~Server(){
 	delete t;
+}
+std::vector<Address*> create_vector_of_destinations(Command* command,int start){
+	std::vector<Address*> destinations;
+	for (int i = start; i < command->get_num_of_parameters(); ++i)
+	{
+		string temp=command->get_parameter(i);
+		int find=temp.find(',');
+		string galaxy=temp.substr(0,find);
+		string planet=temp.substr(find+1);
+		destinations.push_back(new Address(galaxy,planet));
+	}
+	return destinations;
 }
 void Server::listen_to_clients(){
 	string line;
@@ -35,6 +48,25 @@ void Server::listen_to_clients(){
 			}
 			if(command->get_type() == "reject_registraion" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
 				t->reject_registeration(command->get_parameter(0));
+			}
+			if (command->get_type() == "estimate_trip" && command->get_num_of_parameters() >=3){
+				if(command->get_parameter(0) == "VIP"){
+					string temp=command->get_parameter(1);
+					int find=temp.find(',');
+					string galaxy=temp.substr(0,find);
+					string planet=temp.substr(find+1);
+					Address* source_address=new Address(galaxy,planet);
+					std::vector<Address*> destinations=create_vector_of_destinations(command,2);
+					t->estimate_trip(command->get_username(),true,source_address,destinations);
+				}else{
+					string temp=command->get_parameter(0);
+					int find=temp.find(',');
+					string galaxy=temp.substr(0,find);
+					string planet=temp.substr(find+1);
+					Address* source_address=new Address(galaxy,planet);
+					std::vector<Address*> destinations=create_vector_of_destinations(command,1);
+					t->estimate_trip(command->get_username(),false,source_address,destinations);
+				}
 			}
 			delete command;
 		}catch(invalid_command bad_command){

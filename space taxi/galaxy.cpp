@@ -1,15 +1,16 @@
 #include "galaxy.h"
 
 using namespace std;
-bool find_planet_rec(Planet* root,string planet_name){
+bool find_planet_rec(Planet* root,string planet_name,Planet*& target_planet){
 	if(root->get_name() == planet_name){
+		target_planet=root;
 		return true;
 	}else{
 		std::vector<Planet*> planets=root->get_planets();
 		for (int i = 0; i < planets.size(); ++i)
 		{
 			bool find;
-			find=find_planet_rec(planets[i],planet_name);
+			find=find_planet_rec(planets[i],planet_name,target_planet);
 			if(find == true){
 				return find;
 			}
@@ -43,14 +44,24 @@ Galaxy::Galaxy(string _name){
 void Galaxy::add_root(Planet* _root){
 	root=_root;
 }
-int calculate_distance(string from_planet,string to_planet){
-	
+int Galaxy::calculate_distance(string from_planet,string to_planet){
+	Planet* target;
+	int distance=0;
+	int distance_first_from_root=get_distance(root,from_planet,distance);distance=0;
+	int distance_other_from_root=get_distance(root,to_planet,distance);distance=0;
+	if(distance_first_from_root <= distance_other_from_root){
+		find_planet_rec(root,from_planet,target);
+		return get_distance(target,to_planet,distance);
+	}else{
+		find_planet_rec(root,to_planet,target);
+		return get_distance(target,from_planet,distance);
+	}
 }
 int Galaxy::calculate_distance_to(string planet_name){
 	int distance=0;
-	cout<< get_distance(root,planet_name,distance)<<endl;
-	return distance;
+	return get_distance(root,planet_name,distance);
 }
 bool Galaxy::find_planet(std::string planet_name){
-	return find_planet_rec(root,planet_name);
+	Planet* target;
+	return find_planet_rec(root,planet_name,target);
 }
