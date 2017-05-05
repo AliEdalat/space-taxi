@@ -23,13 +23,15 @@ public:
 	};
 	std::string get_spaceship_number(){return spaceship->get_number();}
 	virtual void show_information();
+	//std::string get_status(){return status;}
+	//void set_status(std::string _status){status=_status;}
 	//~Driver();
 	//show trip requests
 	//accept trip requst
 	//show arrived signal
 	//show end trip signal
 protected:
-	std::string status;
+	//std::string status;
 	int score;
 	Spaceship* spaceship;
 };

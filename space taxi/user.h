@@ -17,10 +17,13 @@ public:
 	void logout(){is_login=false;}
 	bool get_is_accepted(){return is_accepted;}
 	void set_is_accepted(bool _is_accepted){is_accepted=_is_accepted;}
+	std::string get_status(){return status;}
+	void set_status(std::string _status){status=_status;}
 	//check username in usernames
 	//~User();
 protected:
 	std::string type;
+	std::string status;
 	std::string user_name;
 	std::string password;
 	int credit;
