@@ -16,6 +16,7 @@ public:
 		score=0;
 		status="unavailable";
 		is_accepted=false;
+		model="driver";
 		//server:
 		//check username in usernames
 		//check spaceship number in numbers
@@ -24,7 +25,11 @@ public:
 	};
 	std::string get_spaceship_number(){return spaceship->get_number();}
 	void add_trip(Trip* new_trip){trips.push_back(new_trip);}
-	void show_trip_requests();
+	void show_requests();
+	std::string get_model(){return model;}
+	int get_score(){return score;}
+	void erase_request(Trip* _trip);
+	bool find_trip(Trip* _trip); 
 	virtual void show_information();
 	//std::string get_status(){return status;}
 	//void set_status(std::string _status){status=_status;}
@@ -35,6 +40,7 @@ public:
 	//show end trip signal
 protected:
 	//std::string status;
+	std::string model;
 	std::vector<Trip*> trips;
 	int score;
 	Spaceship* spaceship;

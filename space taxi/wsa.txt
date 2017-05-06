@@ -1,0 +1,7 @@
+ali register_driver 1 1 U_wing 2 red VIP
+reza register_passenger 3 4
+ali set_status available galaxy1,planet2
+reza request_trip VIP galaxy1,planet1 galaxy3,planet3
+ali show_trip_requests
+reza cancel_trip_request
+ali show_trip_requests

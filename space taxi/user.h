@@ -19,6 +19,11 @@ public:
 	void set_is_accepted(bool _is_accepted){is_accepted=_is_accepted;}
 	std::string get_status(){return status;}
 	void set_status(std::string _status){status=_status;}
+	std::string get_address_galaxy(){return address->get_galaxy();}
+	std::string get_address_planet(){return address->get_planet();}
+	void set_address(Address* _address){address=_address;}
+	Address* get_address(){return address;}
+	bool rate_all_trips(){};
 	//check username in usernames
 	//~User();
 protected:

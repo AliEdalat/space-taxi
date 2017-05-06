@@ -33,10 +33,11 @@ void Server::listen_to_clients(){
 					t->register_passenger(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2));
 				}
 			}
-			if (command->get_type() == "register_driver" && command->get_num_of_parameters() == 6){
-				if(command->get_parameter(5) == "VIP"){
+			if (command->get_type() == "register_driver" && (command->get_num_of_parameters() == 6 || command->get_num_of_parameters() == 5)){
+				if(command->get_num_of_parameters() == 6 && command->get_parameter(5) == "VIP"){
 					t->register_driver(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2),command->get_parameter(3),command->get_parameter(4),true);
 				}else{
+					cout<<"NOT VIP!"<<endl;
 					t->register_driver(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2),command->get_parameter(3),command->get_parameter(4),false);
 				}
 			}
@@ -49,24 +50,53 @@ void Server::listen_to_clients(){
 			if(command->get_type() == "reject_registraion" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
 				t->reject_registeration(command->get_parameter(0));
 			}
+			if(command->get_type() == "set_status" && command->get_num_of_parameters() == 2 && command->get_parameter(0) == "available"){
+				string temp=command->get_parameter(1);
+				int find=temp.find(',');
+				string galaxy=temp.substr(0,find);
+				string planet=temp.substr(find+1);
+				t->set_status_available(command->get_username(),new Address(galaxy,planet));
+			}
+			if(command->get_type() == "set_status" && command->get_num_of_parameters() == 1 && command->get_parameter(0) == "unavailable"){
+				t->set_status_unavailable(command->get_username());
+			}
 			if (command->get_type() == "estimate_trip" && command->get_num_of_parameters() >=3){
 				if(command->get_parameter(0) == "VIP"){
 					string temp=command->get_parameter(1);
 					int find=temp.find(',');
 					string galaxy=temp.substr(0,find);
 					string planet=temp.substr(find+1);
-					Address* source_address=new Address(galaxy,planet);
 					std::vector<Address*> destinations=create_vector_of_destinations(command,2);
-					t->estimate_trip(command->get_username(),true,source_address,destinations);
+					t->estimate_trip(command->get_username(),true,new Address(galaxy,planet),destinations);
 				}else{
 					string temp=command->get_parameter(0);
 					int find=temp.find(',');
 					string galaxy=temp.substr(0,find);
 					string planet=temp.substr(find+1);
-					Address* source_address=new Address(galaxy,planet);
 					std::vector<Address*> destinations=create_vector_of_destinations(command,1);
-					t->estimate_trip(command->get_username(),false,source_address,destinations);
+					t->estimate_trip(command->get_username(),false,new Address(galaxy,planet),destinations);
 				}
+			}if (command->get_type() == "request_trip" && command->get_num_of_parameters() >=3){
+				if(command->get_parameter(0) == "VIP"){
+					string temp=command->get_parameter(1);
+					int find=temp.find(',');
+					string galaxy=temp.substr(0,find);
+					string planet=temp.substr(find+1);
+					std::vector<Address*> destinations=create_vector_of_destinations(command,2);
+					t->request_trip(command->get_username(),true,new Address(galaxy,planet),destinations);
+				}else{
+					string temp=command->get_parameter(0);
+					int find=temp.find(',');
+					string galaxy=temp.substr(0,find);
+					string planet=temp.substr(find+1);
+					std::vector<Address*> destinations=create_vector_of_destinations(command,1);
+					t->request_trip(command->get_username(),false,new Address(galaxy,planet),destinations);
+				}
+			}
+			if(command->get_type() == "cancel_trip_request" && command->get_num_of_parameters() == 0){
+				t->cancel_trip_request(command->get_username());
+			}if(command->get_type() == "show_trip_requests" && command->get_num_of_parameters() == 0){
+				t->show_trip_requests(command->get_username());
 			}
 			delete command;
 		}catch(invalid_command bad_command){

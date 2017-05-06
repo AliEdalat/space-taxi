@@ -16,3 +16,12 @@ void Passenger::cancel_trip(){
 		trips.erase(trips.begin()+index);
 	}
 }
+bool Passenger::rate_all_trips(){
+	for (int i = 0; i < trips.size(); ++i)
+	{
+		if(trips[i]->is_rated() == false){
+			return false;
+		}
+	}
+	return true;
+}

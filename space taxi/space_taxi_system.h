@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 #include "galaxy.h"
 #include "planet.h"
 #include "passenger.h"
@@ -22,6 +23,13 @@
 #define ZERO_ASCII 48
 #define NINE_ASCII 57
 
+typedef struct driver_info driver_info;
+struct driver_info
+{
+	Driver* driver;
+	int rate;
+	int distance;
+};
 
 
 class taxi_system
@@ -36,7 +44,7 @@ public:
 	void accept_registeration(std::string username);
 	void reject_registeration(std::string username);
 	void show_registeration_requests();
-	int calculate_distance(Address* from,Address* to);
+	int calculate_distance_between(Address* from,Address* to);
 	void genarate_discount_code(std::string username); 
 	void read_topology();
 	void read_spaceship_models();
@@ -46,6 +54,7 @@ public:
 	void request_trip(std::string username, bool is_vip,Address* source_address,std::vector<Address*> destinations);
 	void cancel_trip_request(std::string username);
 	void show_trip_requests(std::string username);
+	void accept_trip_request(std::string driver_username,std::string passenger_username);
 	~taxi_system();
 private:
 	bool find_username(std::string username);
@@ -58,7 +67,9 @@ private:
 	Galaxy* find_galaxy(std::string galaxy_name);
 	int calculate_cost_of_trip(bool& is_vip,Address* source_address,std::vector<Address*> destinations);
 	void delete_driver_registeration(std::string username);
-	void send_trip_to_drivers();
+	bool send_trip_to_drivers(Trip*& trip);
+	void sort_drivers(std::vector<Driver*>& drivers,Address* trip_address);
+	void delete_request_in_driver(Trip* trip);
 	int credit;
 	Date_time* date_time;
 	Admin* admin;
