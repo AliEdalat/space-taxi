@@ -570,6 +570,13 @@ void taxi_system::accept_trip_request(string driver_username,string passenger_us
 		{
 			if(trips[i]->get_username() == passenger_username && trips[i]->get_is_accepted() == false){
 				trips[i]->set_is_accepted(true);
+				trips[i]->set_driver_name(driver_username);
+				for (int i = 0; i < drivers.size(); ++i)
+				{
+					if(drivers[i]->find_trip(trips[i]) == true && drivers[i]->get_username() != driver_username){
+						drivers[i]->erase_request(trips[i]);
+					}
+				}
 				break;
 			}
 		}
@@ -581,5 +588,19 @@ void taxi_system::accept_trip_request(string driver_username,string passenger_us
 		cout<<"you can not use \"accept_trip_request\" command please login first!"<<endl;	
 	}else{
 		cout<<"\" passenger_username \" does not have account in space taxi system!"<<endl;
+	}
+}
+void taxi_system::trip_status(string passenger_username){
+	Passenger* passenger=(Passenger*)find_user(passenger_username);
+	if((passenger->get_trip())->get_is_accepted()){
+		for (int i = 0; i < drivers.size(); ++i)
+		{
+			if(drivers[i]->get_username() == (passenger->get_trip())->get_driver_name()){
+				cout<<"show status!"<<endl;
+				cout<<"accepted"<<' '<<drivers[i]->get_username()<<' '<<drivers[i]->get_address_galaxy()<<','<<drivers[i]->get_address_planet()<<' '<<drivers[i]->get_spaceship_model()<<' '<<drivers[i]->get_spaceship_color()<<endl;
+			}
+		}
+	}else{
+		cout<<"waiting"<<endl;
 	}
 }

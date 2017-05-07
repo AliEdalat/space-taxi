@@ -24,6 +24,8 @@ public:
 		spaceship=new Spaceship(_spaceship_number,_spaceship_model,_production_year,_color);
 	};
 	std::string get_spaceship_number(){return spaceship->get_number();}
+	std::string get_spaceship_model(){return spaceship->get_model();}
+	std::string get_spaceship_color(){return spaceship->get_color();}
 	void add_trip(Trip* new_trip){trips.push_back(new_trip);}
 	void show_requests();
 	std::string get_model(){return model;}

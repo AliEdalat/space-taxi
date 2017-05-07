@@ -15,6 +15,7 @@ string find_next_part(string& line){
 }
 
 Command::Command(std::string line){
+	cout<<line<<endl;
 	string temp=line;
 	int counter=0;
 	while(line.find(' ') != -1){

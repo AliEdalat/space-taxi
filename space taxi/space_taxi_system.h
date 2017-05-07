@@ -55,6 +55,7 @@ public:
 	void cancel_trip_request(std::string username);
 	void show_trip_requests(std::string username);
 	void accept_trip_request(std::string driver_username,std::string passenger_username);
+	void trip_status(std::string passenger_username);
 	~taxi_system();
 private:
 	bool find_username(std::string username);

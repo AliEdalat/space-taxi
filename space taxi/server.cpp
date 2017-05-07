@@ -98,6 +98,13 @@ void Server::listen_to_clients(){
 			}if(command->get_type() == "show_trip_requests" && command->get_num_of_parameters() == 0){
 				t->show_trip_requests(command->get_username());
 			}
+			if (command->get_type() == "accept_trip_request" && command->get_num_of_parameters() == 1)
+			{
+				t->accept_trip_request(command->get_username(),command->get_parameter(0));
+			}
+			if(command->get_type() == "trip_status" && command->get_num_of_parameters() == 0){
+				t->trip_status(command->get_username());
+			}
 			delete command;
 		}catch(invalid_command bad_command){
 			cout<<bad_command.get_error()<<endl;

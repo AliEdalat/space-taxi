@@ -3,12 +3,12 @@
 using namespace std;
 
 //string Passenger::get_status(){return status;}
-Passenger::~Passenger(){
+/*Passenger::~Passenger(){
 	for (int i = 0; i < trips.size(); ++i)
 	{
 		delete trips[i];
 	}
-}
+}*/
 void Passenger::cancel_trip(){
 	if (!trips[trips.size()-1]->get_is_accepted())
 	{

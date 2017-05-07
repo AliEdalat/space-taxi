@@ -22,7 +22,7 @@ public:
 	Trip* get_trip(){return trips[trips.size()-1];}
 	bool rate_all_trips();
 	void reduce_credit(int delta){credit-=delta;}
-	~Passenger();
+	//~Passenger();
 	//get discount code
 	//calculate trip cost
 	//trip request
