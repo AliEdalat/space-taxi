@@ -7,6 +7,7 @@ class Date_time
 {
 public:
 	Date_time(std::string _date_time);
+	std::string get_date_time(){return date_time;}
 	//~Date_time();
 private:
 	std::string date_time;

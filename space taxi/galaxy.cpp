@@ -38,8 +38,24 @@ int get_distance(Planet* root,string name,int distance){
 	}
 	return -1;
 }
+void delete_planets_rec(Planet* root){
+	vector<Planet*> children=root->get_planets();
+	if (children.size() != 0)
+	{
+		for (int i = 0; i < children.size(); ++i)
+		{
+			delete_planets_rec(children[i]);
+		}
+		delete root;
+	}else{
+		delete root;
+	}
+}
 Galaxy::Galaxy(string _name){
 	name=_name;
+}
+Galaxy::~Galaxy(){
+	delete_planets_rec(root);
 }
 void Galaxy::add_root(Planet* _root){
 	root=_root;

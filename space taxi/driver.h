@@ -31,11 +31,12 @@ public:
 	std::string get_model(){return model;}
 	int get_score(){return score;}
 	void erase_request(Trip* _trip);
-	bool find_trip(Trip* _trip); 
+	bool find_trip(Trip* _trip);
+	void add_rate(int _rate){score+=_rate;} 
 	virtual void show_information();
 	//std::string get_status(){return status;}
 	//void set_status(std::string _status){status=_status;}
-	//~Driver();
+	~Driver();
 	//show trip requests
 	//accept trip requst
 	//show arrived signal

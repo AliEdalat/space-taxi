@@ -33,4 +33,7 @@ bool Driver::find_trip(Trip* _trip){
 		}
 	}
 	return false;
+}
+Driver::~Driver(){
+	delete spaceship;
 } 

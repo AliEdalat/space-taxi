@@ -39,7 +39,7 @@ public:
 	//add discount code
 	void register_passenger(std::string username,std::string password,std::string phone_number,std::string code="0");
 	void register_driver(std::string _user_name,std::string _password,std::string _spaceship_number,std::string _spaceship_model,std::string _production_year,std::string _color,bool is_vip);
-	void login_user(std::string username);
+	void login_user(std::string username , std::string password);
 	void logout_user(std::string username);
 	void accept_registeration(std::string username);
 	void reject_registeration(std::string username);
@@ -56,6 +56,13 @@ public:
 	void show_trip_requests(std::string username);
 	void accept_trip_request(std::string driver_username,std::string passenger_username);
 	void trip_status(std::string passenger_username);
+	void arrived(std::string driver_username);
+	void end_trip(std::string driver_username);
+	void rate_driver(std::string username,int rate);
+	void charge_account(std::string username,int credit);
+	void get_credit(std::string username);
+	void set_time(std::string _date_time);
+	void passenger_report(std::string username);
 	~taxi_system();
 private:
 	bool find_username(std::string username);

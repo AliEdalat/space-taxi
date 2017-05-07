@@ -9,6 +9,7 @@ class User
 public:
 	User(std::string _user_name,std::string _password,std::string _type);
 	std::string get_username(){return user_name;}
+	std::string get_password(){return password;}
 	int get_credit(){return credit;}
 	std::string get_type(){return type;}
 	void set_credit(int _credit){credit=_credit;}

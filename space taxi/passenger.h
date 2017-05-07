@@ -22,6 +22,8 @@ public:
 	Trip* get_trip(){return trips[trips.size()-1];}
 	bool rate_all_trips();
 	void reduce_credit(int delta){credit-=delta;}
+	bool get_is_excellent_passenger(){return is_excellent_passenger;}
+	void set_is_excellent_passenger(bool status){is_excellent_passenger=status;}
 	//~Passenger();
 	//get discount code
 	//calculate trip cost
@@ -34,6 +36,7 @@ public:
 private:
 	std::string phone_number;
 	//std::string status;
+	bool is_excellent_passenger;
 	std::vector<Trip*> trips;
 };
 
