@@ -136,6 +136,12 @@ void Server::listen_to_clients(){
 				t->charge_account(command->get_username() , credit);
 			}if(command->get_type() == "passenger_report" && command->get_num_of_parameters() == 1){
 				t->passenger_report(command->get_parameter(0));
+			}if (command->get_type() == "driver_report" && command->get_num_of_parameters() == 3 && command->get_username() == "admin"){
+				t->driver_report(command->get_parameter(0) , command->get_parameter(1) , command->get_parameter(2));
+			}if(command->get_type() == "system_report" && command->get_username() == "admin" && command->get_num_of_parameters() == 0){
+				t->system_report();
+			}if(command->get_type() == "system_report" && command->get_username() == "admin" && command->get_num_of_parameters() == 2){
+				t->system_report_with_date(command->get_parameter(0) , command->get_parameter(1));
 			}
 			delete command;
 		}catch(invalid_command bad_command){

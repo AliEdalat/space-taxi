@@ -2,12 +2,13 @@
 #define USER_H
 
 #include "address.h"
+#include "date_time.h"
 #include <string>
 
 class User
 {
 public:
-	User(std::string _user_name,std::string _password,std::string _type);
+	User(std::string _user_name,std::string _password,std::string _type,Date_time* _birth_date);
 	std::string get_username(){return user_name;}
 	std::string get_password(){return password;}
 	int get_credit(){return credit;}
@@ -25,6 +26,7 @@ public:
 	void set_address(Address* _address){address=_address;}
 	Address* get_address(){return address;}
 	bool rate_all_trips(){};
+	Date_time* get_birth_time(){return birth_date;}
 	//check username in usernames
 	//~User();
 protected:
@@ -36,6 +38,7 @@ protected:
 	bool is_login;
 	bool is_accepted;
 	Address* address;
+	Date_time* birth_date;
 };
 
 #endif

@@ -35,7 +35,7 @@ struct driver_info
 class taxi_system
 {
 public:
-	taxi_system(){admin=new Admin("admin","s3cret");date_time=new Date_time("1-00:00:00");};
+	taxi_system(){date_time=new Date_time("1-00:00:00");admin=new Admin("admin","s3cret",date_time);};
 	//add discount code
 	void register_passenger(std::string username,std::string password,std::string phone_number,std::string code="0");
 	void register_driver(std::string _user_name,std::string _password,std::string _spaceship_number,std::string _spaceship_model,std::string _production_year,std::string _color,bool is_vip);
@@ -63,6 +63,10 @@ public:
 	void get_credit(std::string username);
 	void set_time(std::string _date_time);
 	void passenger_report(std::string username);
+	void driver_report(std::string username,std::string from_date,std::string to_date);
+	void system_report();
+	void system_report_with_date(std::string from_date,std::string to_date);
+	void determine_excellent_passengers(Date_time* date_time);
 	~taxi_system();
 private:
 	bool find_username(std::string username);
@@ -78,6 +82,10 @@ private:
 	bool send_trip_to_drivers(Trip*& trip);
 	void sort_drivers(std::vector<Driver*>& drivers,Address* trip_address);
 	void delete_request_in_driver(Trip* trip);
+	int system_credit(std::string from_date,std::string to_date);
+	int number_of_trips(std::string from_date,std::string to_date);
+	int number_of_drivers(std::string from_date,std::string to_date);
+	int number_of_passengers(std::string from_date,std::string to_date);
 	int credit;
 	Date_time* date_time;
 	Admin* admin;

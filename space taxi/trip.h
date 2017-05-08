@@ -29,6 +29,8 @@ public:
 	std::string get_end_time(){return end_date_time->get_date_time();}
 	std::string get_start_time(){return start_date_time->get_date_time();}
 	int get_credit(){return cost;}
+	int get_score(){return rate;}
+	void set_rate(int _rate){rate=_rate;}
 	virtual void show_trip_information();
 protected:
 	Address* source_address;
@@ -38,6 +40,7 @@ protected:
 	Date_time* end_date_time;
 	std::string driver_username;
 	int cost;
+	int rate;
 	bool accepted;
 	bool finished;
 	bool rated;

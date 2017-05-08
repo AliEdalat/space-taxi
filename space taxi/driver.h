@@ -4,6 +4,7 @@
 #include "user.h"
 #include "spaceship.h"
 #include "trip.h"
+#include "date_time.h"
 #include <iostream>
 
 class Driver:public User
@@ -12,7 +13,7 @@ public:
 	Driver(std::string _user_name,std::string _password,std::string _spaceship_number,
 	std::string _spaceship_model,
 	std::string _production_year,
-	std::string _color):User(_user_name,_password,"driver"){
+	std::string _color,Date_time* birth_date):User(_user_name,_password,"driver",birth_date){
 		score=0;
 		status="unavailable";
 		is_accepted=false;
@@ -30,10 +31,15 @@ public:
 	void show_requests();
 	std::string get_model(){return model;}
 	int get_score(){return score;}
+	void set_trip_rate(int rate);
 	void erase_request(Trip* _trip);
 	bool find_trip(Trip* _trip);
 	void add_rate(int _rate){score+=_rate;} 
 	virtual void show_information();
+	void show_report(std::string from , std::string to);
+	std::string get_username(){return user_name;}
+	bool find_trip_for_accept();
+	std::string get_driver_status(){return User::get_status();}
 	//std::string get_status(){return status;}
 	//void set_status(std::string _status){status=_status;}
 	~Driver();
