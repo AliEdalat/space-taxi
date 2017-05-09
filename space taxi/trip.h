@@ -19,6 +19,7 @@ public:
 	void set_is_finished(bool status){finished=status;}
 	std::string get_model(){return model;}
 	bool is_rated(){return rated;}
+	void set_is_rated(bool status){rated=status;}
 	Address* get_address(){return source_address;}
 	Address* get_destination(){return destinations[destinations.size()-1];}
 	void set_driver_name(std::string username){driver_username=username;}

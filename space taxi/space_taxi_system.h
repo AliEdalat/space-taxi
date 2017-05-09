@@ -77,7 +77,8 @@ private:
 	User* find_user(std::string username);
 	bool find_address(Address* address);
 	Galaxy* find_galaxy(std::string galaxy_name);
-	int calculate_cost_of_trip(bool& is_vip,Address* source_address,std::vector<Address*> destinations);
+	int calculate_cost_of_trip(bool is_vip,bool is_excellent_passenger,Address* source_address,std::vector<Address*> destinations);
+	int calculate_length_of_path(Address* source_address,std::vector<Address*> destinations);
 	void delete_driver_registeration(std::string username);
 	bool send_trip_to_drivers(Trip*& trip);
 	void sort_drivers(std::vector<Driver*>& drivers,Address* trip_address);

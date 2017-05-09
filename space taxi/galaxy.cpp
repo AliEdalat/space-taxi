@@ -30,9 +30,14 @@ int get_distance(Planet* root,string name,int distance){
 		std::vector<Planet*> planets=root->get_planets();
 		for (int i = 0; i < planets.size(); ++i)
 		{
+			//cout<<"child :"<<i<<planets[i]->get_name()<<endl;
+			int temp=distance;
 			distance=get_distance(planets[i],name,distance+1);
+			//cout<<"Galaxy class :"<<distance<<endl;
 			if(distance >= 0){
 				return distance;
+			}else{
+				distance=temp;
 			}
 		}
 	}
@@ -66,16 +71,19 @@ int Galaxy::calculate_distance(string from_planet,string to_planet){
 	int distance_first_from_root=get_distance(root,from_planet,distance);distance=0;
 	int distance_other_from_root=get_distance(root,to_planet,distance);distance=0;
 	if(distance_first_from_root <= distance_other_from_root){
+		cout<<"A"<<endl;
 		find_planet_rec(root,from_planet,target);
 		return get_distance(target,to_planet,distance);
 	}else{
+		cout<<"B"<<endl;
 		find_planet_rec(root,to_planet,target);
 		return get_distance(target,from_planet,distance);
 	}
 }
 int Galaxy::calculate_distance_to(string planet_name){
 	int distance=0;
-	return get_distance(root,planet_name,distance);
+	//return get_distance(root,planet_name,distance);
+	return Galaxy::calculate_distance(root->get_name(),planet_name);
 }
 bool Galaxy::find_planet(std::string planet_name){
 	Planet* target;

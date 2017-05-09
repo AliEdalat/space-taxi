@@ -47,9 +47,19 @@ std::string Passenger::get_last_trip_gap_with(std::string time){
 bool Passenger::rate_all_trips(){
 	for (int i = 0; i < trips.size(); ++i)
 	{
-		if(trips[i]->is_rated() == false){
+		if(trips[i]->get_is_accepted() && trips[i]->is_rated() == false){
 			return false;
 		}
 	}
 	return true;
+}
+int Passenger::get_num_of_trips(){
+	int counter=0;
+	for (int i = 0; i < trips.size(); ++i)
+	{
+		if(trips[i]->get_is_accepted()){
+			counter++;
+		}
+	}
+	return counter;
 }

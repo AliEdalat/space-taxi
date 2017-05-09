@@ -25,7 +25,7 @@ public:
 	std::string get_address_planet(){return address->get_planet();}
 	void set_address(Address* _address){address=_address;}
 	Address* get_address(){return address;}
-	bool rate_all_trips(){};
+	virtual bool rate_all_trips(){};
 	Date_time* get_birth_time(){return birth_date;}
 	//check username in usernames
 	//~User();

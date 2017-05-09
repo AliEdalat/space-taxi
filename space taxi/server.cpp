@@ -48,7 +48,7 @@ void Server::listen_to_clients(){
 			if(command->get_type() == "get_discount_code" && command->get_num_of_parameters() == 0 ){
 				t->genarate_discount_code(command->get_username());
 			}
-			if(command->get_type() == "accept_registeration" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
+			if(command->get_type() == "accept_registration" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
 				t->accept_registeration(command->get_parameter(0));
 			}
 			if(command->get_type() == "reject_registraion" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){

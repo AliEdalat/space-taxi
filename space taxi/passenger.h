@@ -26,7 +26,7 @@ public:
 	void reduce_credit(int delta){credit-=delta;}
 	bool get_is_excellent_passenger(){return is_excellent_passenger;}
 	void set_is_excellent_passenger(bool status){is_excellent_passenger=status;}
-	int get_num_of_trips(){return trips.size();}
+	int get_num_of_trips();
 	std::string get_gap_between_last_trips();
 	std::string get_last_trip_gap_with(std::string time);
 	//~Passenger();

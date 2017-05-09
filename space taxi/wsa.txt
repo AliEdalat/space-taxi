@@ -1,7 +1,7 @@
 ali register_driver 1 1 U_wing 2 red VIP
 ali logout
 ali login 1
-admin accept_registeration ali
+admin accept_registration ali
 reza register_passenger 3 4
 ali set_status available galaxy1,planet2
 reza request_trip VIP galaxy1,planet1 galaxy3,planet3
@@ -12,23 +12,32 @@ reza trip_status
 ali arrived
 ali end_trip
 reza rate_driver 7
-reza request_trip VIP galaxy3,planet3 galaxy1,planet2
+reza request_trip VIP galaxy3,planet3 galaxy1,planet1
+reza trip_status
 ali accept_trip_request reza
+reza trip_status
 ali arrived
 ali end_trip
-reza request_trip VIP galaxy1,planet2 galaxy2,planet2
+reza rate_driver 7
+admin set_time 1-10:00:00
+reza request_trip VIP galaxy1,planet1 galaxy3,planet2
+reza trip_status
 ali accept_trip_request reza
+reza trip_status
 ali arrived
 ali end_trip
-reza request_trip VIP galaxy2,planet2 galaxy1,planet2
+reza rate_driver 7
+reza request_trip VIP galaxy3,planet1 galaxy2,planet3
+reza trip_status
 ali accept_trip_request reza
+reza trip_status
 ali arrived
 ali end_trip
 ali show_trip_requests
 reza get_credit
 reza charge_account 12
 reza get_credit
-admin set_time 1-10:00:00
+admin set_time 1-23:00:00
 admin passenger_report reza
 admin driver_report ali 1-00:00:00 1-00:00:00
 admin system_report
