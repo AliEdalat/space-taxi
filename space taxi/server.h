@@ -16,6 +16,7 @@ public:
 	void recive_command();
 	std::string send_result();
 	void listen_to_clients();
+	void do_register_commands(Command* command);
 	taxi_system* get_taxi_system(){return t;}
 private:
 	std::vector<std::string> models;

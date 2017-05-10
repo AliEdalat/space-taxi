@@ -39,6 +39,6 @@ reza charge_account 12
 reza get_credit
 admin set_time 1-23:00:00
 admin passenger_report reza
-admin driver_report ali 1-00:00:00 1-00:00:00
+admin driver_report ali 1-00:00:00 1-10:00:00
 admin system_report
 admin system_report 1-00:00:00 1-00:00:00

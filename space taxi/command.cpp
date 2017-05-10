@@ -13,10 +13,29 @@ string find_next_part(string& line){
 		return temp;
 	}
 }
+string replace_multiple_spaces_to_one(string line){
+	bool find_space=false;
+	string result;
+	for (int i = 0; i < line.size(); ++i)
+	{
+		if(line[i] == ' ' && find_space == false){
+			result.push_back(line[i]);
+		}else if(line[i] != ' '){
+			result.push_back(line[i]);
+		}
+		if(line[i] != ' '){
+			find_space=false;
+		}else{
+			find_space=true;
+		}
+	}
+	return result;
+}
 
 Command::Command(std::string line){
 	cout<<line<<endl;
 	string temp=line;
+	//cout<<replace_multiple_spaces_to_one(line)<<endl;
 	int counter=0;
 	while(line.find(' ') != -1){
 		if(counter == 0){

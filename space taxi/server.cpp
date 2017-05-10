@@ -21,6 +21,23 @@ std::vector<Address*> create_vector_of_destinations(Command* command,int start){
 	}
 	return destinations;
 }
+void Server::do_register_commands(Command* command){
+	if(command->get_type() == "register_passenger" && command->get_num_of_parameters() >= 2){
+		if(command->get_num_of_parameters() == 2){
+			t->register_passenger(command->get_username(),command->get_parameter(0),command->get_parameter(1),"0");
+		}else{
+			t->register_passenger(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2));
+		}
+	}
+	if (command->get_type() == "register_driver" && (command->get_num_of_parameters() == 6 || command->get_num_of_parameters() == 5)){
+		if(command->get_num_of_parameters() == 6 && command->get_parameter(5) == "VIP"){
+			t->register_driver(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2),command->get_parameter(3),command->get_parameter(4),true);
+		}else{
+			cout<<"NOT VIP!"<<endl;
+			t->register_driver(command->get_username(),command->get_parameter(0),command->get_parameter(1),command->get_parameter(2),command->get_parameter(3),command->get_parameter(4),false);
+		}
+	}
+}
 void Server::listen_to_clients(){
 	string line;
 	while(getline(cin,line)){
@@ -51,7 +68,7 @@ void Server::listen_to_clients(){
 			if(command->get_type() == "accept_registration" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
 				t->accept_registeration(command->get_parameter(0));
 			}
-			if(command->get_type() == "reject_registraion" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
+			if(command->get_type() == "reject_registration" && command->get_username() == "admin" && command->get_num_of_parameters() == 1){
 				t->reject_registeration(command->get_parameter(0));
 			}
 			if (command->get_type() == "login" && command->get_num_of_parameters() == 1){

@@ -108,7 +108,7 @@ void taxi_system::read_topology(){
 		}
 	}
 	file.close();
-	cout<<galaxies[1]->calculate_distance("planet1","planet3")<<endl;
+	//cout<<galaxies[1]->calculate_distance("planet1","planet3")<<endl;
 }
 Galaxy* taxi_system::find_galaxy(string galaxy_name){
 	for (int i = 0; i < galaxies.size(); ++i)
@@ -122,17 +122,17 @@ Galaxy* taxi_system::find_galaxy(string galaxy_name){
 int taxi_system::calculate_distance_between(Address* from,Address* to){
 	if(from->get_galaxy() == to->get_galaxy()){
 		Galaxy* galaxy=find_galaxy(from->get_galaxy());
-		cout<<"DISTANCE :"<<galaxy->calculate_distance(from->get_planet(),to->get_planet())<<endl;
+		//cout<<"DISTANCE :"<<galaxy->calculate_distance(from->get_planet(),to->get_planet())<<endl;
 		return galaxy->calculate_distance(from->get_planet(),to->get_planet());
 	}
 	else{
-		cout<<from->get_galaxy()<<' '<<from->get_planet()<<endl;
-		cout<<to->get_galaxy()<<' '<<to->get_planet()<<endl;
+		//cout<<from->get_galaxy()<<' '<<from->get_planet()<<endl;
+		//cout<<to->get_galaxy()<<' '<<to->get_planet()<<endl;
 		Galaxy* from_galaxy=find_galaxy(from->get_galaxy());
 		Galaxy* to_galaxy=find_galaxy(to->get_galaxy());
 		int from_to_root=from_galaxy->calculate_distance_to(from->get_planet());
 		int to_to_root=to_galaxy->calculate_distance_to(to->get_planet());
-		cout<<"DISTANCE :"<<from_to_root+to_to_root<<endl;
+		//cout<<"DISTANCE :"<<from_to_root+to_to_root<<endl;
 		return from_to_root+to_to_root;
 	}
 }
@@ -204,7 +204,7 @@ void taxi_system::register_passenger(string username,string password,string phon
 		return;
 	}
 	if(find_phone_number(phone_number) == true){
-		cout<<phone_number<<" is not new , i have this in my database!"<<endl;
+		cout<<phone_number<<" is not new phone number , i have this in my database!"<<endl;
 		return;
 	}
 	if(is_phone_number(phone_number) == false){
@@ -365,6 +365,8 @@ void taxi_system::show_registeration_requests(){
 				drivers[i]->show_information();
 			}
 		}
+	}else{
+		cout<<"you can not use \"show_registeration_requests\" command please login first!"<<endl;
 	}
 }
 bool taxi_system::find_address(Address* address){
@@ -422,21 +424,21 @@ int taxi_system::calculate_length_of_path(Address* source_address,std::vector<Ad
 	{
 		sum+=calculate_distance_between(destinations[i],destinations[i+1]);
 	}
-	cout<<"PATH_LENGTH :"<<sum<<endl;
+	//cout<<"PATH_LENGTH :"<<sum<<endl;
 	return sum;
 }
 int taxi_system::calculate_cost_of_trip(bool is_vip,bool is_excellent_passenger,Address* source_address,std::vector<Address*> destinations){
 	int result;
 	int sum=calculate_length_of_path(source_address,destinations);
 	result=sum;
-	cout<<"COST_OF_TRIP :"<<result<<endl;
+	//cout<<"COST_OF_TRIP :"<<result<<endl;
 	if(is_vip){
-		cout<<sum<<endl;
+		//cout<<sum<<endl;
 		result = 2*sum;
 	}if(is_excellent_passenger){
 		result= sum/2;
 	}
-	cout<<"COST_OF_TRIP :"<<result<<endl;
+	//cout<<"COST_OF_TRIP :"<<result<<endl;
 	return result;
 }
 void taxi_system::estimate_trip(std::string username,bool is_vip,Address* source_address,std::vector<Address*> destinations){
@@ -556,12 +558,16 @@ void taxi_system::request_trip(std::string username, bool is_vip,Address* source
 				}
 				cout<<cost<<' '<<distance<<endl;
 			}
+		}else{
+			cout<<"you do not have enough money to request this trip!"<<endl;
 		}
 
 	}else if(!find_username(username)){
 		cout<<"you do not have account in space taxi system!"<<endl;
 	}else if(!find_user(username)->get_is_login()){
 		cout<<"you can not use \"request_trip\" command please login first!"<<endl;	
+	}else if(find_user(username)->get_type() != "passenger"){
+		cout<<username<<" is not a valid username for a passenger!"<<endl;
 	}else if(find_user(username)->get_status() != "available"){
 		cout<<"you are traveling and you can not request new trip!"<<endl;
 	}else if(find_user(username)->rate_all_trips() == false){
@@ -652,7 +658,7 @@ void taxi_system::trip_status(string passenger_username){
 			for (int i = 0; i < drivers.size(); ++i)
 			{
 				if(drivers[i]->get_username() == (passenger->get_trip())->get_driver_name()){
-					cout<<"show status!"<<endl;
+					//cout<<"show status!"<<endl;
 					cout<<"accepted"<<' '<<drivers[i]->get_username()<<' '<<drivers[i]->get_address_galaxy()<<','<<drivers[i]->get_address_planet()<<' '<<drivers[i]->get_spaceship_model()<<' '<<drivers[i]->get_spaceship_color()<<endl;
 				}
 			}
@@ -670,7 +676,7 @@ void taxi_system::trip_status(string passenger_username){
 	}
 }
 void taxi_system::arrived(string driver_username){
-	if (find_username(driver_username) && find_user(driver_username)->get_is_login())
+	if (find_username(driver_username) && find_user(driver_username)->get_is_login() && find_user(driver_username)->get_type() == "driver")
 	{
 		for (int i = 0; i < trips.size(); ++i)
 		{
@@ -682,12 +688,14 @@ void taxi_system::arrived(string driver_username){
 		determine_excellent_passengers(date_time);
 	}else if(!find_username(driver_username)){
 		cout<<"you do not have account in space taxi system!"<<endl;
+	}else if(find_user(driver_username)->get_type() != "driver"){
+		cout<<driver_username<<" is not a valid username for a driver!"<<endl;
 	}else{
 		cout<<"you can not use \"arrived\" command please login first!"<<endl;
 	}
 }
 void taxi_system::end_trip(string driver_username){
-	if (find_username(driver_username) && find_user(driver_username)->get_is_login())
+	if (find_username(driver_username) && find_user(driver_username)->get_is_login() && find_user(driver_username)->get_type() == "driver")
 	{
 		for (int i = 0; i < trips.size(); ++i)
 		{
@@ -704,12 +712,14 @@ void taxi_system::end_trip(string driver_username){
 		}
 	}else if(!find_username(driver_username)){
 		cout<<"you do not have account in space taxi system!"<<endl;
+	}else if(find_user(driver_username)->get_type() != "driver"){
+		cout<<driver_username<<" is not a valid username for a driver!"<<endl;
 	}else{
 		cout<<"you can not use \"end_trip\" command please login first!"<<endl;
 	}
 }
 void taxi_system::rate_driver(string username,int rate){
-	if(find_username(username) && find_user(username)->get_is_login()){
+	if(find_username(username) && find_user(username)->get_is_login() && find_user(username)->get_type() == "passenger"){
 		Passenger* passenger=(Passenger*)find_user(username);
 		if(!passenger->rate_all_trips() && (passenger->get_trip())->get_is_accepted() && (passenger->get_trip())->get_is_finished()){
 			(passenger->get_trip())->set_is_rated(true);
@@ -722,6 +732,8 @@ void taxi_system::rate_driver(string username,int rate){
 		}
 	}else if(!find_username(username)){
 		cout<<"you do not have account in space taxi system!"<<endl;
+	}else if (find_user(username)->get_type() != "passenger"){
+		cout<<username<<" is not a valid username for a passenger!"<<endl;
 	}else{
 		cout<<"you can not use \"rate_driver\" command please login first!"<<endl;
 	}
@@ -753,10 +765,10 @@ void taxi_system::determine_excellent_passengers(Date_time* date_time){
 	for (int i = 0; i < passengers.size(); ++i)
 	{	Date_time* one_day=new Date_time("1-00:00:00");
 		if(passengers[i]->get_num_of_trips() >= 3){
-			cout<<"EXCELLENT :"<<passengers[i]->get_gap_between_last_trips()<<endl;
+			//cout<<"EXCELLENT :"<<passengers[i]->get_gap_between_last_trips()<<endl;
 		}
 		if(!passengers[i]->get_is_excellent_passenger() && passengers[i]->get_num_of_trips() >= 3 && passengers[i]->get_gap_between_last_trips() < one_day->get_date_time()){
-			cout<<"YES :"<<endl;
+			//cout<<"YES :"<<endl;
 			passengers[i]->set_is_excellent_passenger(true);
 		}else if (passengers[i]->get_is_excellent_passenger() && passengers[i]->get_last_trip_gap_with(date_time->get_date_time()) > "2-00:00:00"){
 			passengers[i]->set_is_excellent_passenger(false);
